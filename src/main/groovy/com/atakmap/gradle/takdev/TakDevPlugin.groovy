@@ -363,6 +363,9 @@ class TakDevPlugin implements Plugin<Project> {
             def mavenCoord = [group: mavenGroupCommon, name: 'api', version: mavenVersion]
             debugPrintln("${variant.name} => Using repository API, ${mavenCoord}")
 
+            // The following statements take ages to fail out, so just return here immediately and ignore the rest
+            return
+
             // Test artifact resolution.
             if (!tryResolve(project, takrepo, mavenCoord)) {
                 println("Warning: Failed to resolve remote for ${variant.name}. Skipping ${variant.name}.")
