@@ -293,6 +293,7 @@ class TakDevPlugin implements Plugin<Project> {
 
         // add the maven repo as a dependency
         MavenArtifactRepository takrepo = project.repositories.maven({
+            allowInsecureProtocol = true
             url = project.takrepoUrl
             name = 'takrepo'
             credentials {
