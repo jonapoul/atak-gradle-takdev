@@ -43,10 +43,13 @@ class TakDevPlugin implements Plugin<Project> {
 
     void apply(Project project) {
 
+        println("Using custom TAKDEV plugin!")
+
         project.ext.devkitVersion = getLocalOrProjectProperty(project, 'takrepo.devkit.version', 'devkitVersion', project.ATAK_VERSION)
-        if (0 > versionComparator(project.devkitVersion, '4.2.0')) {
-            throw new GradleException("Incompatible takdev version. This plugin should be major version 1 to support ${project.devkitVersion}")
-        }
+        /* Removed to support SDK 4.10.X.Y */
+//        if (0 > versionComparator(project.devkitVersion, '4.2.0')) {
+//            throw new GradleException("Incompatible takdev version. This plugin should be major version 1 to support ${project.devkitVersion}")
+//        }
 
         verbose = getLocalOrProjectProperty(project, 'takdev.verbose', null, 'false').equals('true')
 
@@ -80,7 +83,7 @@ class TakDevPlugin implements Plugin<Project> {
 
         if (project.mavenOnly) {
             if (project.isDevKitEnabled) {
-                configureMaven(project)
+//                configureMaven(project)
             } else {
                 throw new GradleException("No remote repo available to configure TAK DevKit as mavenOnly")
             }
@@ -92,8 +95,8 @@ class TakDevPlugin implements Plugin<Project> {
             }
             if (null == tuple) {
                 if (project.isDevKitEnabled) {
-                    println("Configuring Maven TAK plugin build")
-                    configureMaven(project)
+//                    println("Configuring Maven TAK plugin build")
+//                    configureMaven(project)
                 } else {
                     throw new GradleException("No remote repp or local files available to configure TAK DevKit")
                 }
@@ -363,9 +366,6 @@ class TakDevPlugin implements Plugin<Project> {
             // The corner stone, the API coordinates
             def mavenCoord = [group: mavenGroupCommon, name: 'api', version: mavenVersion]
             debugPrintln("${variant.name} => Using repository API, ${mavenCoord}")
-
-            // The following statements take ages to fail out, so just return here immediately and ignore the rest
-            return
 
             // Test artifact resolution.
             if (!tryResolve(project, takrepo, mavenCoord)) {
